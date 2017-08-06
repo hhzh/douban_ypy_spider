@@ -13,4 +13,5 @@ class DoubanYpySpiderItem(scrapy.Item):
     # name = scrapy.Field()
     name = scrapy.Field()
     pic_url = scrapy.Field()
+    title_name = scrapy.Field()
     # down_urls = scrapy.Field()
