@@ -19,15 +19,21 @@ class YpySpider(scrapy.Spider):
     def parse(self, response):
         item = DoubanYpySpiderItem()
 
-        title_name = response.xpath('//title/text()').extract()[0].strip()
-        title_name = title_name[title_name.index(']') + 1:title_name.index('·')]
+        title_name = response.xpath('//title/text()').extract()
+        # title_name = title_name[title_name.index(']') + 1:title_name.index('·')]
+
+        item['title_name'] = title_name
 
         count = 1
-        for sel1 in response.xpath('//div[@class="pic"]/script[@class="cache-photo"]').extract():
-            pattern = re.compile('https://[\w|\W]*__l')
-
-            item['pic_url'] = pattern.findall(sel1)[0]
+        for sel1 in response.xpath('//div[@class="pic-wrapper"]/img/@data-src').extract():
+            # pattern = re.compile('https://qnypy.doubanio.com/[\w|\W]*__l')
+            #
+            # item['pic_url'] = pattern.findall(sel1)[0]
+            item['pic_url'] = sel1
             item['name'] = title_name + str(count) + '.jpg'
+
+            print('url=', item['pic_url'], 'name=', item['name'])
+
             count = count + 1
             yield item
 
